@@ -1,0 +1,99 @@
+Items.AllRX_boosts:
+  $type: gamedataObjectActionEffect_Record
+  statusEffect: BaseStatusEffect.AllRX
+
+BaseStatusEffect.AllRX:
+  $type: gamedataStatusEffect_Record
+  duration: Items.AllRXSomaDuration
+  dynamicDuration: False
+  isAffectedByTimeDilationNPC: True
+  isAffectedByTimeDilationPlayer: True
+  maxStacks: RTDB.StatusEffect_inline0
+  reapplyPackagesOnMaxStacks: False
+  removeAllStacksWhenDurationEnds: True
+  removeOnStoryTier: False
+  replicated: False
+  savable: True
+  statusEffectType: BaseStatusEffectTypes.Misc
+  stopActiveSfxOnDeactivate: True
+  uiData: BaseStatusEffect.AllRX_UI
+  debugTags: []
+  gameplayTags:
+    - Buff
+  immunityStats: []
+  packages:
+    - BaseStatusEffect.AllRX_packages
+    - BaseStatusEffect.AllRX_packages2
+  SFX: []
+  VFX: []
+
+
+###################
+## Note to myself: You tried it all, double package is the only who works for applying the armor status effect. 
+## changing the numbers only makes the effect "dissapears"/Not applying at all, doesn't matter if more or less than value: 30
+## Double "BaseStatusEffect.AllRX_Armor" also won't work, even if I duplicate it. 
+## Only works: making a new logic package as It's done.
+################## 
+
+BaseStatusEffect.AllRX_packages:
+  $type: gamedataGameplayLogicPackage_Record
+  stackable: False
+  animationWrapperOverrides: []
+  effectors: []
+  items: []
+  statPools: []
+  stats:
+    - BaseStatusEffect.AllRX_Armor
+
+
+BaseStatusEffect.AllRX_Armor:
+  $type: gamedataConstantStatModifier_Record
+  value: 30
+  modifierType: Additive
+  statType: BaseStats.Armor
+
+
+BaseStatusEffect.AllRX_packages2:
+  $type: gamedataGameplayLogicPackage_Record
+  stackable: False
+  animationWrapperOverrides: []
+  effectors: []
+  items: []
+  statPools: []
+  stats:
+    - BaseStatusEffect.AllRX_Armor2
+
+
+BaseStatusEffect.AllRX_Armor2:
+  $type: gamedataConstantStatModifier_Record
+  value: 30
+  modifierType: Additive
+  statType: BaseStats.Armor
+
+
+BaseStatusEffect.AllRX_UI:
+  $type: gamedataStatusEffectUIData_Record
+  description: ''
+  displayName: LocKey#RXSideEffects
+  fluffText: ''
+  iconPath: SuicideAttempt
+  priority: 0
+  floatValues: []
+  intValues: []
+  nameValues: []
+  stats: []
+
+######## SIDE EFFECTS DURATION ###########
+
+Items.AllRXSomaDuration:
+  $type: gamedataStatModifierGroup_Record
+  drawBasedOnStatType: False
+  optimiseCombinedModifiers: False
+  saveBasedOnStatType: False
+  statModsLimit: -1
+  relatedModifierGroups: []
+  statModifiers:
+    - $type: gamedataConstantStatModifier_Record
+      value: 120
+      modifierType: Additive
+      statType: BaseStats.MaxDuration

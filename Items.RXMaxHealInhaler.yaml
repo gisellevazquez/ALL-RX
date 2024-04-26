@@ -1,0 +1,357 @@
+Items.RXMaxHealInhaler$(tier):
+  $instances: &RXDrugsAllLogic
+    - { tier: Common , upgrade: CommonPlus , healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: CommonPlus, upgrade: Uncommon, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: Uncommon, upgrade: UncommonPlus, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: UncommonPlus, upgrade: Rare, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: Rare, upgrade: RarePlus, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: RarePlus, upgrade: Epic, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: Epic, upgrade: EpicPlus, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: EpicPlus, upgrade: Legendary, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: Legendary, upgrade: LegendaryPlus, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: LegendaryPlus, upgrade: LegendaryPlusPlus, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+    - { tier: LegendaryPlusPlus, upgrade: None, healthPS: 50 , instantHealth: 200 , perSecondUI: 20 }
+  $type: gamedataConsumableItem_Record
+  castPoint: 0.449999988
+  consumableBaseName: ConsumableBaseName.AllRXSomaHeal
+  consumableType: ConsumableType.Medical
+  cycleDuration: 0.75
+  initBlendDuration: 0.100000001
+  removePoint: 0.75
+  animFeatureName: ItemData
+  animName: ui_garment_pose
+  animSetResource: ''
+  appearanceName: rx_inhaler
+  canDrop: True
+  CraftingData: Items.EpicHealingItemCraftingData
+  crosshair: Crosshairs.None
+  deprecated: False
+  dropObject: defaultItemDrop
+  enableNpcRPGData: False
+  entityName: rx_med_inhaler
+  equipArea: EquipmentArea.Consumable
+  friendlyName: ''
+  garmentOffset: 0
+  icon:
+    atlasResourcePath: base\gameplay\gui\common\icons\items\RX_icons.inkatlas
+    atlasPartName: slot_01
+  isCached: False
+  isCoreCW: False
+  isCustomizable: False
+  isGarment: False
+  isPart: False
+  isSingleInstance: True
+  itemCategory: ItemCategory.Consumable
+  itemSecondaryAction: ItemAction.Consume
+  itemType: ItemType.Con_Inhaler
+  localizedName: ''
+  mass: 1
+  minigameInstance: minigame_v2.DefaultItemMinigame
+  powerLevelDeterminedByParent: False
+  quality: Quality.$(tier)
+  qualityRestrictedByParent: False
+  replicateWhenNotActive: False
+  upgradeCostMult: 1
+  useHeadgearGarmentAggregator: False
+  useNewSpawnMethod: False
+  usesVariants: False
+  savable: False
+  animationParameters: []
+  appearanceSuffixes: []
+  appearanceSuffixesOwnerOverride: []
+  attachmentSlots: []
+  buyPrice:
+    - Price.ConsumableBasePrice
+    - Price.ItemQualityMultiplier
+    - Price.PlusTierMultiplier
+    - Price.BuyPrice_StreetCred_Discount
+    - Price.Injector
+  cameraForward: {x: 0, y: 0, z: 0}
+  cameraUp: {x: 0, y: 0, z: 0}
+  connections: []
+  displayName: LocKey#somaheal-name
+  equipAreas: []
+  equipPrereqs: []
+  gameplayRestrictions:
+    - GameplayRestriction.VehicleCombatNoInterruptions
+  hairSkinnedMeshComponents: []
+  localizedDescription: LocKey#2788
+  OnAttach: []
+  OnEquip:
+    - Items.RXMaxHealInhalerStats$(tier)
+  OnLooted: []
+  parts: []
+  placementSlots:
+    - AttachmentSlots.WeaponLeft
+  previewBBoxOverride: []
+  requiredSlots: []
+  sellPrice: []
+  slotPartList: []
+  slotPartListPreset: []
+  tags:
+    - Preload
+    - Consumable
+    - Inhaler
+    - Drug
+    - Medical
+    - SkipActivityLogOnRemove
+    - ChargedConsumable
+    - Alcohol
+  variants: []
+  visualTags: []
+  effectors: []
+  objectActions:
+    - Items.RXMaxHealInhalerActions
+  statModifierGroups:
+    - Items.RXMaxHeal_HealDuration$(tier)
+    - Items.AllRXSomaDuration
+  statModifiers:
+    - Items.RXSomaHeal_Modifiers
+  statPools: []
+  weakspots: []
+
+#__________________________________#
+
+Items.RXMaxHealInhalerStats$(tier):
+  $instances: *RXDrugsAllLogic
+  $type: gamedataGameplayLogicPackage_Record
+  stackable: False
+  UIData: Items.RXSomaHeal_UIData$(tier)
+  nameValues: []
+  stats: []
+  animationWrapperOverrides: []
+  effectors: []
+  items: []
+  statPools: []
+  stats:
+    - $type: gamedataConstantStatModifier_Record
+      value: 1
+      modifierType: Additive
+      statType: BaseStats.IsHealingItemEquipped
+    - $type: gamedataConstantStatModifier_Record
+      value: $(healthPS) #then regenerates {int_0} Health per second
+      modifierType: Additive
+      statType: BaseStats.InjectorBaseOverTheTimeHealing
+    - $type: gamedataConstantStatModifier_Record
+      value: $(instantHealth) #Instantly restores {int_1} Health
+      modifierType: Additive
+      statType: BaseStats.InjectorBaseHealing
+
+Items.RXSomaHeal_UIData$(tier):
+  $instances: *RXDrugsAllLogic
+  $type: gamedataGameplayLogicPackageUIData_Record
+  localizedDescription: LocKey#RX_VacDescription #Instantly restores {int_1} Health, then regenerates {int_0} Health per second for {int_2} sec.
+  localizedName: ''
+  maxFactor: 0
+  floatValues: []
+  intValues:
+    - $(healthPS)
+    - $(instantHealth)
+    - $(perSecondUI)
+  nameValues: []
+  stats: []
+
+Items.RXMaxHealInhalerActions:
+  $type: gamedataItemAction_Record
+  isDefaultLootChoice: False
+  removeAfterUse: False
+  actionName: UseHealCharge
+  hackCategory: HackCategory.NotAHack
+  objectActionType: ObjectActionType.Item
+  priority: 0
+  activationTime: []
+  completionEffects:
+    - Items.RXMaxHealInhalerCompletionEffects
+    - Items.RXMaxHeal_FX
+    - Items.RXMaxHeal_FX1
+    - Items.RXMaxHeal_FX2
+    - Items.RXMaxHeal_FX3
+    - Items.AllRX_boosts
+  costs: []
+  durationTime: []
+  instigatorActivePrereqs: []
+  instigatorPrereqs:
+    - Items.RXMaxHealInhalerInstPrereq
+  interruptionPrereqs: []
+  rewards: []
+  startEffects:
+    - ItemAction.UseHealCharge_RX
+  targetActivePrereqs: []
+  targetPrereqs: []
+
+Items.RXMaxHealInhalerInstPrereq:
+  $type: gamedataStatPoolPrereq_Record
+  comparePercentage: True
+  comparisonType: Greater
+  listenConstantly: False
+  skipOnApply: False
+  statPoolType: Health
+  prereqClassName: StatPoolPrereq
+  valueToCheck:
+    - Items.RXMaxHealInhaler_valuecheck
+
+Items.RXMaxHealInhaler_valuecheck:
+  $type: gamedataConstantStatModifier_Record
+  value: 0
+  modifierType: Additive
+  statType: BaseStats.Health
+
+Items.RXMaxHealInhalerCompletionEffects:
+  $type: gamedataObjectActionEffect_Record
+  statusEffect: BaseStatusEffect.RXMaxHeal_Heal
+
+Items.RXMaxHeal_FX:
+  $type: gamedataObjectActionEffect_Record
+  statusEffect: BaseStatusEffect.Drunk
+
+Items.RXMaxHeal_FX1:
+  $type: gamedataObjectActionEffect_Record
+  statusEffect: BaseStatusEffect.DruggedSevere
+
+Items.RXMaxHeal_FX2:
+  $type: gamedataObjectActionEffect_Record
+  statusEffect: BaseStatusEffect.Poisoned
+
+Items.RXMaxHeal_FX3:
+  $type: gamedataObjectActionEffect_Record
+  statusEffect: BaseStatusEffect.Drunk
+
+############################################################
+## Stat Modifiers
+############################################################
+
+Items.RXSomaHeal_Modifiers:
+  $type: gamedataConstantStatModifier_Record
+  value: 99899
+  modifierType: Additive
+  statType: BaseStats.Quantity
+
+############################################################
+## Effects
+############################################################
+
+ItemAction.UseHealCharge_RX:
+  $type: gamedataObjectActionEffect_Record
+  effectorToTrigger: ItemAction.UseHealCharge_RX
+
+ItemAction.UseHealCharge_RX:
+  $type: gamedataEffector_Record
+  effectorClassName: RemoveStatusEffectsEffector
+  prereqRecord: Prereqs.AlwaysTruePrereq
+  removeAfterActionCall: False
+  removeAfterPrereqCheck: False
+  statModifierGroups: []
+  effectTags:
+    - InhalerBuff
+    - InjectorBuff
+  statusEffects: []
+  effectTypes: []
+
+####################################
+
+BaseStatusEffect.RXMaxHeal_Heal:
+  $type: gamedataStatusEffect_Record
+  duration: Items.RXMaxHeal_HealDuration$(tier)
+  dynamicDuration: False
+  isAffectedByTimeDilationNPC: True
+  isAffectedByTimeDilationPlayer: True
+  maxStacks: RTDB.StatusEffect_inline0
+  reapplyPackagesOnMaxStacks: False
+  removeAllStacksWhenDurationEnds: False
+  removeOnStoryTier: False
+  replicated: False
+  savable: True
+  statusEffectType: BaseStatusEffectTypes.Misc
+  stopActiveSfxOnDeactivate: True
+  uiData: BaseStatusEffect.UIHealtimedata$(tier)
+  debugTags: []
+  gameplayTags:
+    - Buff
+    - InjectorBuff
+  immunityStats: []
+  packages:
+    - BaseStatusEffect.RXMaxHeal_HealPackage 
+  SFX: []
+  VFX:
+    - BaseStatusEffect.RXMaxHeal_InjectorBuffVFX 
+    - BaseStatusEffect.RXMaxHeal_Cold
+
+BaseStatusEffect.UIHealtimedata$(tier):
+  $instances: *RXDrugsAllLogic
+  $type: gamedataStatusEffectUIData_Record
+  description: LocKey#77749 #\u002B{int_0}% Health Regen
+  displayName: LocKey#rxmaxhealHealName #Bounce Back Mk.2
+  fluffText: ''
+  iconPath: regeneration_icon
+  priority: 0
+  floatValues: []
+  intValues:
+    - $(perSecondUI)
+  nameValues: []
+  stats: []
+
+BaseStatusEffect.RXMaxHeal_InjectorBuffVFX:
+  $type: gamedataStatusEffectFX_Record
+  name: soulkiller
+  shouldReapply: False
+
+BaseStatusEffect.RXMaxHeal_Cold:
+  $type: gamedataStatusEffectFX_Record
+  name: breath_cold 
+  shouldReapply: False
+
+BaseStatusEffect.RXMaxHeal_HealPackage:
+  $type: gamedataGameplayLogicPackage_Record
+  stackable: False
+  animationWrapperOverrides: []
+  effectors:
+    - BaseStatusEffect.RXMaxHeal_regen
+    - BaseStatusEffect.RXMaxHeal_statpool
+    - Effectors.UsedHealingItemOrCyberwareEffector #no 
+  items: []
+  statPools: []
+  stats: []
+
+BaseStatusEffect.RXMaxHeal_regen:
+  $type: gamedataModifyStatPoolModifierEffector_Record
+  modificationType: Regeneration
+  poolModifier: BaseStatusEffect.BonesMcCoy70V0_inline2
+  statPoolType: Health
+  effectorClassName: ModifyStatPoolModifierEffector
+  prereqRecord: Prereqs.AlwaysTruePrereq
+  removeAfterActionCall: False
+  removeAfterPrereqCheck: False
+  statModifierGroups: []
+
+
+BaseStatusEffect.RXMaxHeal_statpool:
+  $type: gamedataModifyStatPoolValueEffector_Record
+  setValue: False
+  usePercent: False
+  effectorClassName: ModifyStatPoolValueEffector
+  prereqRecord: Prereqs.AlwaysTruePrereq
+  removeAfterActionCall: False
+  removeAfterPrereqCheck: False
+  statPoolUpdates:
+    - BaseStatusEffect.BonesMcCoy70V0_inline10
+  statModifierGroups: []
+
+
+###############################
+## Duration
+###############################
+
+Items.RXMaxHeal_HealDuration$(tier):
+  $instances: *RXDrugsAllLogic
+  $type: gamedataStatModifierGroup_Record
+  drawBasedOnStatType: False
+  optimiseCombinedModifiers: False
+  saveBasedOnStatType: False
+  statModsLimit: -1
+  relatedModifierGroups: []
+  statModifiers:
+    - $type: gamedataConstantStatModifier_Record
+      value: $(perSecondUI) #works
+      modifierType: Additive
+      statType: BaseStats.MaxDuration
+    

@@ -1,0 +1,3 @@
+ConsumableBaseName.AllRXSomaHeal:
+  $type: gamedataConsumableBaseName_Record
+  enumName: AllRXSoma
